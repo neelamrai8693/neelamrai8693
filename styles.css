@@ -151,6 +151,8 @@ input:focus, textarea:focus{box-shadow:0 0 0 4px var(--ring); border-color:trans
 .footer-nav a{color:var(--muted); text-decoration:none; margin-left:1rem}
 .footer-nav a:hover{color:inherit}
 
+
+
 @media (max-width:860px){
   .menu-toggle{display:block}
   .nav{
@@ -238,8 +240,135 @@ body::before {
   display:block;
 }
 
+/* Responsive project grid */
+#projectGrid.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  align-items: stretch;
+}
+
+/* Optional: tighten the layout on very large screens */
+@media (min-width: 1200px) {
+  #projectGrid.cards {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  }
+}
+
 /* Tidy headings/text/buttons */
 .project-card h3{ margin:.5rem 0; }
 .project-card p{ flex-grow:1; }           /* keeps buttons aligned */
 .project-card .btn{ margin-top:1rem; align-self:flex-start; }
 
+.btn-social {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 50px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-social:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+}
+
+.btn-social.linkedin {
+  background: #0a66c2;
+  color: #fff;
+}
+.btn-social.github {
+  background: #24292e;
+  color: #fff;
+}
+.btn-social.email {
+  background: #d44638;
+  color: #fff;
+}
+
+/* General buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.95rem;   /* smaller text */
+  padding: 0.5rem 1rem; /* reduce padding */
+  border-radius: 8px;
+  font-weight: 600;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn i {
+  font-size: 1rem;  /* smaller icons */
+}
+
+/* Hero buttons specifically */
+.hero-cta .btn,
+.hero-cta .btn-outline,
+.hero-text .btn-social {
+  font-size: 0.9rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 6px;
+}
+
+.hero-text .btn-social {
+  font-size: 0.85rem;   /* even smaller for socials */
+  padding: 0.4rem 0.8rem;
+}
+
+/* Add space between the two button groups */
+.hero-cta {
+  display: flex;
+  gap: 1rem;  /* space between View Projects and Contact Me */
+  flex-wrap: wrap;
+  margin-bottom: 1rem; /* space below main CTAs */
+}
+
+.socials {
+  display: flex;
+  gap: 0.8rem;  /* space between LinkedIn, GitHub, Email */
+  flex-wrap: wrap;
+}
+
+.site-header {
+  display: flex;
+  justify-content: center; /* center the content horizontally */
+  align-items: center;
+  padding: 1rem;
+}
+
+.site-header .logo {
+  margin-right: auto; /* pushes logo to the left */
+}
+
+.site-header nav {
+  display: flex;
+  gap: 1.5rem;
+}
+
+/* Multilingual hello styling */
+.eyebrow { letter-spacing: .08em; text-transform: uppercase; opacity:.9; }
+
+.hello-gradient{
+  background: linear-gradient(90deg, #7c3aed, #06b6d4, #3b82f6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 800;
+}
+
+.hello-fade-in{
+  animation: helloFade .6s ease;
+}
+@keyframes helloFade {
+  from { opacity: 0; transform: translateY(6px); filter: blur(2px); }
+  to   { opacity: 1; transform: translateY(0);   filter: blur(0); }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .hello-fade-in{ animation:none; }
+}

@@ -31,6 +31,30 @@ sections.forEach(s => obs.observe(s));
 // Footer year
 document.getElementById('year').textContent = new Date().getFullYear();
 
+// Multilingual "Hello" rotator
+const helloRotator = document.getElementById('helloRotator');
+if (helloRotator) {
+  const hellos = [
+    "Hello!", "नमस्ते!", "こんにちは!", "안녕하세요!", "Hola!",
+    "Bonjour!", "Ciao!", "Guten Tag!", "Olá!", "Привет!",
+    "مرحبا!", "你好!", "สวัสดี!", "Kia ora!", "Salut!"
+  ];
+  let i = 0;
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function showHello() {
+    helloRotator.classList.remove('hello-fade-in');
+    // small reflow to restart animation
+    void helloRotator.offsetWidth;
+    helloRotator.textContent = hellos[i % hellos.length];
+    helloRotator.classList.add('hello-fade-in');
+    i++;
+  }
+  showHello();
+  const interval = setInterval(showHello, prefersReduced ? 4000 : 2200);
+}
+
+
 // === Projects: edit me ===
 // Put your images in /assets and update the file names below
 const projects = [
@@ -47,7 +71,7 @@ const projects = [
     description:
       "Trained RL agents (DQN, Actor-Critic, REINFORCE) to control a two-joint robotic arm to reach random targets while minimizing control cost.",
     skills: ["Reinforcement Learning", "Algorithm Implementation", "Hyperparameter Tuning", "Performance Analysis"],
-    img: "assets/rl-reacher.jpg",
+    img: "assets/rl-reacher.png",
     demo: "#"
   },
   {
@@ -63,7 +87,7 @@ const projects = [
     description:
       "Neural-network model to predict target pressure; focused on preprocessing, model selection, and tuning for accuracy and interpretability.",
     skills: ["Neural Networks", "Model Evaluation", "Hyperparameter Tuning", "Data Preprocessing"],
-    img: "assets/bleve-pressure.jpg",
+    img: "assets/bleve-pressure.png",
     demo: "#"
   }
 ];

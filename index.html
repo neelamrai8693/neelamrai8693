@@ -7,6 +7,7 @@
     <meta name="description" content="Data Analyst & Full‑Stack projects, skills, and contact." />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css" />
     <link rel="icon" href="assets/favicon.png">
     <script>
@@ -19,7 +20,7 @@
     <div class="aurora" aria-hidden="true"></div>
     <canvas id="stars" aria-hidden="true"></canvas>
     <header class="site-header">
-      <a class="logo" href="#home">NR</a>
+      <a class="logo" href="#home"><span>Neelam</span> Rai</a>
       <nav class="nav" id="nav">
         <a href="#home">Home</a>
         <a href="#about">About</a>
@@ -35,18 +36,30 @@
     <section id="home" class="hero">
       <div class="hero-inner container">
         <div class="hero-text">
-          <p class="eyebrow">Hello! I’m</p>
+          <p class="eyebrow" aria-live="polite">
+            <span id="helloRotator" class="hello-gradient">Hello!</span> I’m
+          </p>
           <h1>Neelam Rai</h1>
           <p class="subtitle">Data Analyst</p>
           <p class="lede">I turn complex data into clear, actionable stories that drive better decisions. I leverage Power BI with SQL, DAX, and Python to transform raw data into insightful dashboards and compelling data stories that go beyond charts to drive real business decisions..</p>
           <div class="hero-cta">
-            <a class="btn" href="#projects">View Projects</a>
-            <a class="btn-outline" href="#contact">Contact Me</a>
+            <a class="btn" href="#projects">
+              <i class="fas fa-folder-open"></i> View Projects
+            </a>
+            <a class="btn" href="#contact"> 
+              <i class="fas fa-envelope"></i> Contact Me
+            </a>
           </div>
           <div class="socials">
-            <a href="https://www.linkedin.com/in/neelamrai888/" aria-label="LinkedIn">LinkedIn</a>
-            <a href="https://github.com/neelamrai8693" aria-label="GitHub">GitHub</a>
-            <a href="mailto:Neelamrai8693@gmail.com" aria-label="Email">Email</a>
+            <a href="https://www.linkedin.com/in/neelamrai888/" target="_blank" class="btn btn-social linkedin">
+              <i class="fab fa-linkedin"></i> LinkedIn
+            </a>
+            <a href="https://github.com/neelamrai8693" target="_blank" class="btn btn-social github">
+              <i class="fab fa-github"></i> GitHub
+            </a>
+            <a href="mailto:Neelamrai8693@gmail.com" class="btn btn-social email">
+              <i class="fas fa-envelope"></i> Email
+            </a>
           </div>
         </div>
         <div class="hero-photo">
@@ -58,7 +71,7 @@
     <section id="about" class="section">
       <div class="container grid-2">
         <div>
-          <h2>About</h2>
+          <h2 class="center">About</h2>
           <p>
             With a Master’s in Predictive Analytics (Data Science) and hands-on expertise in Power BI, Python, and data visualization, I specialize in finding patterns others overlook, then presenting them in ways that inspire action.
             My approach blends analytical precision with strategic thinking. Whether I’m designing intuitive dashboards, uncovering performance trends, or building predictive models, my goal is simple: connect data to decisions that create measurable impact.
@@ -72,7 +85,7 @@
           </ul>
         </div>
         <div class="card shadow">
-          <h3 class="mb-2">Highlights</h3>
+          <h3 class="mb-2"><h3 class="center">Highlights</h3>
           <div class="stats">
             <div><strong>5+</strong><span>Data Projects</span></div>
             <div><strong>3+</strong><span>Power BI Dashboards</span></div>
@@ -114,7 +127,7 @@
           </div>
           <div class="form-row">
             <label for="message">Message</label>
-            <textarea id="message" name="message" rows="5" placeholder="Tell me about your project…" required></textarea>
+            <textarea id="message" name="message" rows="5" placeholder="Write a message…" required></textarea>
             <small class="error" data-for="message"></small>
           </div>
           <div class="form-actions">
