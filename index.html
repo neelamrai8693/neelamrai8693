@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Neelam Rai — Portfolio</title>
+    <meta name="description" content="Data Analyst & Full‑Stack projects, skills, and contact." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" href="assets/favicon.png">
+    <script>
+      document.documentElement.classList.remove('no-js');
+      document.documentElement.classList.add('js');
+    </script>
+  </head>
+  <body>
+    <!-- Galaxy Background Layers -->
+    <div class="aurora" aria-hidden="true"></div>
+    <canvas id="stars" aria-hidden="true"></canvas>
+    <header class="site-header">
+      <a class="logo" href="#home">NR</a>
+      <nav class="nav" id="nav">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#contact">Contact</a>
+        <a class="btn small" href="assets/Resume.pdf" download="Neelam_Rai_Resume.pdf">Download CV</a>
+        <button id="themeToggle" class="icon-btn" aria-label="Toggle theme" title="Toggle theme">🌓</button>
+      </nav>
+      <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    </header>
+
+    <section id="home" class="hero">
+      <div class="hero-inner container">
+        <div class="hero-text">
+          <p class="eyebrow">Hello! I’m</p>
+          <h1>Neelam Rai</h1>
+          <p class="subtitle">Data Analyst</p>
+          <p class="lede">I turn complex data into clear, actionable stories that drive better decisions. I leverage Power BI with SQL, DAX, and Python to transform raw data into insightful dashboards and compelling data stories that go beyond charts to drive real business decisions..</p>
+          <div class="hero-cta">
+            <a class="btn" href="#projects">View Projects</a>
+            <a class="btn-outline" href="#contact">Contact Me</a>
+          </div>
+          <div class="socials">
+            <a href="https://www.linkedin.com/in/neelamrai888/" aria-label="LinkedIn">LinkedIn</a>
+            <a href="https://github.com/neelamrai8693" aria-label="GitHub">GitHub</a>
+            <a href="mailto:Neelamrai8693@gmail.com" aria-label="Email">Email</a>
+          </div>
+        </div>
+        <div class="hero-photo">
+          <img src="assets/Milkyway.jpg" alt="Milky Way Galaxy by Neelam Rai"/>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section">
+      <div class="container grid-2">
+        <div>
+          <h2>About</h2>
+          <p>
+            With a Master’s in Predictive Analytics (Data Science) and hands-on expertise in Power BI, Python, and data visualization, I specialize in finding patterns others overlook, then presenting them in ways that inspire action.
+            My approach blends analytical precision with strategic thinking. Whether I’m designing intuitive dashboards, uncovering performance trends, or building predictive models, my goal is simple: connect data to decisions that create measurable impact.
+            I believe the real power of analytics isn’t just in the numbers, it’s in the story they tell and the change they can spark.
+          </p>
+          <ul class="checklist">
+            <li>Power BI dashboards with advance DAX measures</li>
+            <li>Python for data analysis (pandas, scikit-learn, visualization)</li>
+            <li>SQL (Postgres) for queries & data modeling</li>
+            <li>End-to-end storytelling - from raw data to dashboards</li>
+          </ul>
+        </div>
+        <div class="card shadow">
+          <h3 class="mb-2">Highlights</h3>
+          <div class="stats">
+            <div><strong>5+</strong><span>Data Projects</span></div>
+            <div><strong>3+</strong><span>Power BI Dashboards</span></div>
+            <div><strong>95+</strong><span>Lighthouse Perf (after test)</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="section alt">
+      <div class="container">
+        <h2 class="center">Projects</h2>
+        <!-- Grid container (no card styling here) -->
+        <div id="projectGrid" class="cards"></div>
+      </div>
+    </section>
+
+
+    <section id="skills" class="section">
+      <div class="container">
+        <h2 class="center">Skills</h2>
+        <div class="skill-tags" id="skillTags"></div>
+      </div>
+    </section>
+
+    <section id="contact" class="section alt">
+      <div class="container">
+        <h2 class="center">Contact</h2>
+        <form id="contactForm" class="form card shadow" novalidate>
+          <div class="form-row">
+            <label for="name">Name</label>
+            <input id="name" name="name" placeholder="Your name" required />
+            <small class="error" data-for="name"></small>
+          </div>
+          <div class="form-row">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="you@example.com" required />
+            <small class="error" data-for="email"></small>
+          </div>
+          <div class="form-row">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="5" placeholder="Tell me about your project…" required></textarea>
+            <small class="error" data-for="message"></small>
+          </div>
+          <div class="form-actions">
+            <button class="btn" type="submit">Send</button>
+            <span id="formStatus" role="status" aria-live="polite"></span>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <strong>© <span id="year"></span> Neelam Rai</strong>
+          <p class="muted">Made with vanilla HTML/CSS/JS.</p>
+        </div>
+        <nav class="footer-nav">
+          <a href="#about">About</a>
+          <a href="#projects">Projects</a>
+          <a href="#skills">Skills</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
