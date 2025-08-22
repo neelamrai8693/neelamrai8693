@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Project – Neelam Rai</title>
+    <meta name="description" content="Project details for Neelam Rai’s portfolio." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css" />
+    <script>
+      document.documentElement.classList.remove('no-js');
+      document.documentElement.classList.add('js');
+    </script>
+  </head>
+  <body class="project-page">
+    <div class="aurora" aria-hidden="true"></div>
+    <canvas id="stars" aria-hidden="true"></canvas>
+
+    <header class="site-header">
+      <a class="logo" href="index.html#home"><span>Neelam</span> Rai</a>
+      <nav class="nav">
+        <a href="index.html#about">About</a>
+        <a href="index.html#projects">Projects</a>
+        <a href="index.html#skills">Skills</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main class="container section">
+      <a class="btn small" href="index.html#projects">← Back to Projects</a>
+
+      <h1 id="projectTitle"></h1>
+      <img id="projectImage" class="detail-hero" alt="">
+      <p id="projectDescription"></p>
+
+      <div id="projectDetails"></div>
+
+      <div id="projectLinks" class="project-links" style="display:flex;gap:.6rem;flex-wrap:wrap"></div>
+
+      <nav class="project-pager" aria-label="Project navigation" style="display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-top:2rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,.12);">
+        <span id="prevProject" class="muted">← Previous</span>
+        <span class="spacer" style="flex:1;"></span>
+        <span id="nextProject" class="muted">Next →</span>
+      </nav>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <strong>© <span id="year"></span> Neelam Rai</strong>
+          <p class="muted">Made with vanilla HTML/CSS/JS.</p>
+        </div>
+        <nav class="footer-nav">
+          <a href="index.html#about">About</a>
+          <a href="index.html#projects">Projects</a>
+          <a href="index.html#skills">Skills</a>
+          <a href="index.html#contact">Contact</a>
+        </nav>
+      </div>
+    </footer>
+
+    <script>
+      // Year
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      // Project data (make sure slugs match index.html)
+      const projects = [
+        {
+            slug: "hrv-cnn",
+            title: "Identification of Age Groups from HRV using CNN",
+            description:
+                "Built a CNN to classify HRV by converting interbeat interval (IBI) data into images. Improved detection of subtle cardiovascular patterns.",
+            skills: ["CNN", "Python", "Data Preprocessing", "Visualization", "Data Augmentation"],
+            img: "assets/hrv-cnn.jpg",
+            code: "#",    // e.g., "https://github.com/youruser/hrv-cnn"
+            demo: "#",
+            details: `
+                <h2>Overview</h2>
+                <p>
+                  This project classifies participants into <strong>young</strong> vs <strong>old</strong> age groups using
+                  <strong>heart rate variability (HRV)</strong> signals. I transform interbeat interval (IBI) series into
+                  image representations and train a <strong>convolutional neural network</strong> to detect patterns that
+                  correlate with age-related autonomic differences.
+                </p>
+
+                <h2>Data</h2>
+                <ul>
+                  <li><strong>Subjects:</strong> 10 participants with HRV recordings (IBI sequences)</li>
+                  <li><strong>Labels:</strong> Binary (0 = young, 1 = old)</li>
+                  <li><strong>Preprocessing:</strong> artifact removal, normalization, segmentation; IBI → 2D image transforms</li>
+                </ul>
+
+                <h2>Process</h2>
+                <ol>
+                  <li><strong>Feature construction:</strong> Converted IBI windows to images (e.g., recurrence/gram‑like maps) to leverage CNNs.</li>
+                  <li><strong>Model:</strong> A compact CNN (conv + pooling blocks → dense layers) trained with early stopping.</li>
+                  <li><strong>Regularization:</strong> data augmentation on images; dropout in dense layers.</li>
+                  <li><strong>Evaluation:</strong> held‑out test set; confusion matrix and standard metrics.</li>
+                  <li><strong>Interpretation:</strong> t‑SNE on final‑layer embeddings to visualize class separation.</li>
+                </ol>
+
+                <h2>Results</h2>
+                <p><em>Test confusion matrix</em> (Young/Old):</p>
+                <ul>
+                  <li><strong>TP (young→young):</strong> 57</li>
+                  <li><strong>TN (old→old):</strong> 65</li>
+                  <li><strong>FP (old→young):</strong> 9</li>
+                  <li><strong>FN (young→old):</strong> 8</li>
+                </ul>
+
+                <p><em>Metrics</em>:</p>
+                <ul>
+                  <li><strong>Accuracy:</strong> 0.88</li>
+                  <li><strong>Precision:</strong> 0.88</li>
+                  <li><strong>Recall:</strong> 0.89</li>
+                  <li><strong>F1‑score:</strong> 0.88</li>
+                </ul>
+
+                <div class="detail-gallery">
+                  <img src="assets/hrv-confusion.png" alt="Confusion Matrix" class="detail-img">
+                  <img src="assets/hrv-metrics.png" alt="Evaluation Metrics Bar Chart" class="detail-img">
+                </div>
+
+                <h3>Training Dynamics</h3>
+                <p>
+                  Over 20 epochs, training accuracy steadily increases while validation accuracy remains high and stable.
+                  Training loss drops rapidly and stabilizes; validation loss stays low, indicating limited overfitting.
+                </p>
+                <img src="assets/hrv-curves.png" alt="Training/Validation Accuracy and Loss" class="detail-img">
+
+                <h3>Representation Analysis (t‑SNE)</h3>
+                <p>
+                  t‑SNE of the final‑layer embeddings shows two well‑separated clusters for young vs old on both the training and
+                  validation sets, suggesting the model learns generalizable features.
+                </p>
+                <div class="detail-gallery">
+                  <img src="assets/hrv-tsne-train.png" alt="t-SNE Training Embeddings" class="detail-img">
+                  <img src="assets/hrv-tsne-val.png" alt="t-SNE Validation Embeddings" class="detail-img">
+                </div>
+
+                <h2>Takeaways</h2>
+                <ul>
+                  <li>Transforming IBI signals into images enables CNNs to capture nuanced HRV patterns linked to age.</li>
+                  <li>Strong performance across precision/recall indicates balanced classification for both classes.</li>
+                  <li>Embedding visualizations confirm meaningful, separable representations rather than overfitting artifacts.</li>
+                  <li>Next steps: expand dataset, compare with 1D‑CNN/transformers, and explore feature attribution (Grad‑CAM).</li>
+                </ul>
+
+                <h2>Resources</h2>
+                <p>
+                  ${'#' !== '#' ? `<a class="btn small" href="#" target="_blank" rel="noopener">View Code</a>` : ''}
+                  ${'#' !== '#' ? `<a class="btn-outline small" href="#" target="_blank" rel="noopener">Live Demo</a>` : ''}
+                </p>
+            `
+        },
+
+        {
+            slug: "rl-reacher",
+            title: "Reinforcement Learning – Reacher Environment",
+            description:
+                "Trained RL agents (DQN, Actor-Critic, REINFORCE) to control a two-joint robotic arm to reach random targets while minimizing control cost.",
+            skills: ["Reinforcement Learning", "Algorithm Implementation", "Hyperparameter Tuning", "Performance Analysis"],
+            img: "assets/rl-reacher.png",
+            code: "#",
+            demo: "#",
+            details: `
+                <h2>Overview</h2>
+                <p>
+                  In this project, I applied multiple <strong>reinforcement learning algorithms</strong> to solve the classic
+                  <strong>Reacher environment</strong> (two-joint robotic arm reaching a moving target).
+                  The challenge was balancing precision with energy cost.
+                </p>
+
+                <h2>Environment</h2>
+                <ul>
+                  <li><strong>State space:</strong> joint angles, velocities, and target location</li>
+                  <li><strong>Action space:</strong> continuous torque applied at joints</li>
+                  <li><strong>Reward:</strong> +1 for reaching target, small penalty for movement cost</li>
+                </ul>
+
+                <h2>Agents Implemented</h2>
+                <ol>
+                  <li><strong>DQN:</strong> baseline with discretized actions</li>
+                  <li><strong>Actor-Critic:</strong> continuous actions with policy/value networks</li>
+                  <li><strong>REINFORCE:</strong> Monte Carlo policy gradient</li>
+                </ol>
+
+                <h2>Results</h2>
+                <p>
+                  After ~500 episodes:
+                </p>
+                <ul>
+                  <li>DQN: ~65% success rate (limited by discrete action space)</li>
+                  <li>Actor-Critic: ~90% success, smooth movements, lower variance</li>
+                  <li>REINFORCE: ~75% success, slower convergence</li>
+                </ul>
+
+                <div class="detail-gallery">
+                  <img src="assets/rl-learning-curves.png" alt="Learning Curves" class="detail-img">
+                  <img src="assets/rl-agent-comparison.png" alt="Agent Comparison" class="detail-img">
+                </div>
+
+                <h2>Takeaways</h2>
+                <ul>
+                  <li>Actor-Critic performed best for continuous control with stable learning.</li>
+                  <li>DQN was simpler but under-performed due to discretization.</li>
+                  <li>Reward shaping and normalization were critical for stability.</li>
+                </ul>
+              `
+        },
+
+        {
+            slug: "amazon-kmeans",
+            title: "K-means Cluster Analysis – Amazon Reviews",
+            description:
+                "Uncovered patterns and segments in the Amazon Fine Food Reviews dataset to inform recommendations using K-means clustering.",
+            skills: ["K-means", "Feature Selection", "Data Preprocessing", "Data Visualization"],
+            img: "assets/amazon-kmeans.jpg",
+            code: "#",
+            demo: "#",        
+            details: `
+                <h2>Overview</h2>
+                <p>
+                  This project explores the <strong>Amazon Fine Food Reviews</strong> dataset using unsupervised learning.
+                  The aim was to <strong>cluster reviews</strong> into meaningful groups for potential personalization.
+                </p>
+
+                <h2>Data & Features</h2>
+                <ul>
+                  <li>~500K reviews, with text + metadata (ratings, votes, etc.)</li>
+                  <li>Selected features: <strong>review length, rating, helpfulness ratio, sentiment score</strong></li>
+                  <li>Scaled using Min-Max normalization</li>
+                </ul>
+
+                <h2>Process</h2>
+                <ol>
+                  <li>Exploratory Data Analysis: word frequencies, distribution of ratings</li>
+                  <li>Text preprocessing: tokenization, TF-IDF, sentiment scoring</li>
+                  <li>Ran <strong>K-means clustering</strong> with different K values (elbow method for optimal K)</li>
+                  <li>Visualized clusters with <strong>t-SNE</strong></li>
+                </ol>
+
+                <h2>Results</h2>
+                <p>
+                  Chose <strong>K = 4</strong>. Each cluster showed distinct traits:
+                </p>
+                <ul>
+                  <li>Cluster 1: Positive reviews, long text, high helpfulness</li>
+                  <li>Cluster 2: Negative, short reviews with low ratings</li>
+                  <li>Cluster 3: Neutral, medium reviews, mixed ratings</li>
+                  <li>Cluster 4: Enthusiastic positives, lots of exclamation/emotion words</li>
+                </ul>
+
+                <div class="detail-gallery">
+                  <img src="assets/amazon-clusters.png" alt="Cluster Visualization" class="detail-img">
+                  <img src="assets/amazon-elbow.png" alt="Elbow Method" class="detail-img">
+                </div>
+
+                <h2>Takeaways</h2>
+                <ul>
+                  <li>K-means successfully grouped reviews by sentiment and style.</li>
+                  <li>Clustering could support <strong>personalized recommendations</strong> and review filtering.</li>
+                  <li>Future work: use <strong>word embeddings (BERT)</strong> for richer representations.</li>
+                </ul>
+            `
+        },
+
+        {
+            slug: "bleve-pressure",
+            title: "BLEVE Pressure Prediction",
+            description:
+                "Neural-network model to predict target pressure; focused on preprocessing, model selection, and tuning for accuracy and interpretability.",
+            skills: ["Neural Networks", "Model Evaluation", "Hyperparameter Tuning", "Data Preprocessing"],
+            img: "assets/bleve-pressure.png",
+            code: "#",
+            demo: "#",
+            details: `
+                <h2>Overview</h2>
+                <p>
+                  BLEVE (<strong>Boiling Liquid Expanding Vapor Explosion</strong>) events are critical in chemical safety.
+                  This project develops a <strong>neural network model</strong> to predict pressure outcomes given experimental conditions.
+                </p>
+
+                <h2>Data</h2>
+                <ul>
+                  <li>Collected ~2,000 experimental runs with variables like liquid type, volume, heating rate, vessel size</li>
+                  <li>Target: <strong>Maximum pressure at failure</strong></li>
+                  <li>Preprocessing: missing value imputation, normalization, train/test split</li>
+                </ul>
+
+                <h2>Process</h2>
+                <ol>
+                  <li>Compared models: linear regression, random forest, neural networks</li>
+                  <li>Final model: 3-layer dense NN (ReLU activations, dropout regularization)</li>
+                  <li>Hyperparameter tuning via grid search (learning rate, batch size)</li>
+                  <li>Evaluation with MAE, RMSE, R²</li>
+                </ol>
+
+                <h2>Results</h2>
+                <ul>
+                  <li>Neural net achieved <strong>R² = 0.91</strong>, outperforming baselines</li>
+                  <li>MAE: 0.12 MPa, RMSE: 0.18 MPa</li>
+                  <li>Predictions generalize well on unseen test cases</li>
+                </ul>
+
+                <div class="detail-gallery">
+                  <img src="assets/bleve-loss.png" alt="Training/Validation Loss" class="detail-img">
+                  <img src="assets/bleve-pred-vs-actual.png" alt="Predicted vs Actual Scatter Plot" class="detail-img">
+                </div>
+
+                <h2>Takeaways</h2>
+                <ul>
+                  <li>Neural networks capture non-linearities better than traditional regression.</li>
+                  <li>Hyperparameter tuning was key to achieving stable convergence.</li>
+                  <li>Future work: apply explainable AI (SHAP) to highlight variable importance for domain experts.</li>
+                </ul>
+            `
+        }
+
+      ];
+
+      // Read slug from URL
+      const params = new URLSearchParams(window.location.search);
+      const slug = params.get("slug");
+      const idx = projects.findIndex(p => p.slug === slug);
+      const project = projects[idx];
+
+      if (!project) {
+        document.querySelector("main").innerHTML = `
+          <p class="muted">Project not found.</p>
+          <p><a class="btn" href="index.html#projects">← Back to Projects</a></p>
+        `;
+      } else {
+        // Fill content
+        document.getElementById("projectTitle").textContent = project.title;
+        document.getElementById("projectImage").src = project.img;
+        document.getElementById("projectImage").alt = project.title;
+        document.getElementById("projectDescription").textContent = project.description;
+        document.getElementById("projectDetails").innerHTML = project.details || "";
+
+        const links = document.getElementById("projectLinks");
+        if (project.code && project.code !== "#") {
+          links.innerHTML += `<a class="btn small" href="${project.code}" target="_blank" rel="noopener">View Code</a>`;
+        }
+        if (project.demo && project.demo !== "#") {
+          links.innerHTML += `<a class="btn-outline small" href="${project.demo}" target="_blank" rel="noopener">Live Demo</a>`;
+        }
+
+        // Prev/Next navigation
+        const prev = idx > 0 ? projects[idx - 1] : null;
+        const next = idx < projects.length - 1 ? projects[idx + 1] : null;
+
+        document.getElementById("prevProject").innerHTML = prev
+          ? `<a class="btn-outline small" href="project.html?slug=${prev.slug}">← ${prev.title}</a>`
+          : `<span class="muted">← Previous</span>`;
+
+        document.getElementById("nextProject").innerHTML = next
+          ? `<a class="btn small" href="project.html?slug=${next.slug}">${next.title} →</a>`
+          : `<span class="muted">Next →</span>`;
+
+        // Optional: keyboard shortcuts
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "ArrowLeft" && prev) location.href = `project.html?slug=${prev.slug}`;
+          if (e.key === "ArrowRight" && next) location.href = `project.html?slug=${next.slug}`;
+        });
+      }
+
+      // Static starfield background
+      (function(){
+        const c = document.getElementById('stars');
+        if(!c) return;
+        const ctx = c.getContext('2d');
+        function resize(){
+          const dpr = window.devicePixelRatio || 1;
+          c.width = Math.floor(window.innerWidth * dpr);
+          c.height = Math.floor(window.innerHeight * dpr);
+          ctx.setTransform(1,0,0,1,0,0);
+          ctx.scale(dpr, dpr);
+          ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+          const count = Math.min(140, Math.floor((window.innerWidth*window.innerHeight)/14000));
+          for (let i=0;i<count;i++){
+            const x = Math.random()*window.innerWidth;
+            const y = Math.random()*window.innerHeight;
+            const r = Math.random()*1.2 + 0.2;
+            ctx.globalAlpha = Math.random()*0.8 + 0.2;
+            ctx.fillStyle = `hsl(${[270,190,320][Math.floor(Math.random()*3)]} 90% 70%)`;
+            ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
+          }
+        }
+        window.addEventListener('resize', resize);
+        resize();
+      })();
+    </script>
+  </body>
+</html>
