@@ -38,10 +38,11 @@
 
       <div id="projectLinks" class="project-links" style="display:flex;gap:.6rem;flex-wrap:wrap"></div>
 
-      <nav class="project-pager" aria-label="Project navigation" style="display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-top:2rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,.12);">
-        <span id="prevProject" class="muted">← Previous</span>
-        <span class="spacer" style="flex:1;"></span>
-        <span id="nextProject" class="muted">Next →</span>
+      <nav class="project-pager" aria-label="Project navigation"
+         style="display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-top:2rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,.12);">
+      <span id="prevProject" class="muted">← Previous</span>
+      <span style="flex:1"></span>
+      <span id="nextProject" class="muted">Next →</span>
       </nav>
     </main>
 
@@ -334,12 +335,15 @@
       } else {
         // Fill content
         document.getElementById("projectTitle").textContent = project.title;
-        document.getElementById("projectImage").src = project.img;
-        document.getElementById("projectImage").alt = project.title;
+        const imgEl = document.getElementById("projectImage");
+        imgEl.src = project.img;
+        imgEl.alt = project.title;
         document.getElementById("projectDescription").textContent = project.description;
         document.getElementById("projectDetails").innerHTML = project.details || "";
 
+        // Links
         const links = document.getElementById("projectLinks");
+        links.innerHTML = ""; // clear first
         if (project.code && project.code !== "#") {
           links.innerHTML += `<a class="btn small" href="${project.code}" target="_blank" rel="noopener">View Code</a>`;
         }
@@ -348,23 +352,35 @@
         }
 
         // Prev/Next navigation
-        const prev = idx > 0 ? projects[idx - 1] : null;
-        const next = idx < projects.length - 1 ? projects[idx + 1] : null;
+        function renderPager(idx, projects) {
+          const prev = idx > 0 ? projects[idx - 1] : null;
+          const next = idx < projects.length - 1 ? projects[idx + 1] : null;
 
-        document.getElementById("prevProject").innerHTML = prev
-          ? `<a class="btn-outline small" href="project.html?slug=${prev.slug}">← ${prev.title}</a>`
-          : `<span class="muted">← Previous</span>`;
+          const prevEl = document.getElementById("prevProject");
+          const nextEl = document.getElementById("nextProject");
 
-        document.getElementById("nextProject").innerHTML = next
-          ? `<a class="btn small" href="project.html?slug=${next.slug}">${next.title} →</a>`
-          : `<span class="muted">Next →</span>`;
+          if (prev) {
+            prevEl.innerHTML = `<a class="btn-outline small" href="project.html?slug=${prev.slug}">← ${prev.title}</a>`;
+            prevEl.classList.remove("muted");
+          } else {
+            prevEl.innerHTML = "← Previous";
+            prevEl.classList.add("muted");
+          }
 
-        // Optional: keyboard shortcuts
-        document.addEventListener("keydown", (e) => {
-          if (e.key === "ArrowLeft" && prev) location.href = `project.html?slug=${prev.slug}`;
-          if (e.key === "ArrowRight" && next) location.href = `project.html?slug=${next.slug}`;
-        });
-      }
+          if (next) {
+            nextEl.innerHTML = `<a class="btn small" href="project.html?slug=${next.slug}">${next.title} →</a>`;
+            nextEl.classList.remove("muted");
+          } else {
+            nextEl.innerHTML = "Next →";
+            nextEl.classList.add("muted");
+          }
+        }
+
+        // define idx before calling renderPager
+        const idx = projects.findIndex(p => p.slug === slug);
+        renderPager(idx, projects);
+      } // close the else block
+
 
       // Static starfield background
       (function(){
