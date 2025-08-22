@@ -54,66 +54,6 @@ if (helloRotator) {
   const interval = setInterval(showHello, prefersReduced ? 4000 : 2200);
 }
 
-
-// === Projects: edit me ===
-// Put your images in /assets and update the file names below
-const projects = [
-  {
-    title: "Identification of Age Groups from HRV using CNN",
-    description:
-      "Built a CNN to classify HRV by converting interbeat interval (IBI) data into images. Improved detection of subtle cardiovascular patterns.",
-    skills: ["CNN", "Python", "Data Preprocessing", "Visualization", "Data Augmentation"],
-    img: "assets/hrv-cnn.jpg",         // <-- your screenshot  
-    demo: "#"  // or "#"
-  },
-  {
-    title: "Reinforcement Learning – Reacher Environment",
-    description:
-      "Trained RL agents (DQN, Actor-Critic, REINFORCE) to control a two-joint robotic arm to reach random targets while minimizing control cost.",
-    skills: ["Reinforcement Learning", "Algorithm Implementation", "Hyperparameter Tuning", "Performance Analysis"],
-    img: "assets/rl-reacher.png",
-    demo: "#"
-  },
-  {
-    title: "K-means Cluster Analysis – Amazon Reviews",
-    description:
-      "Uncovered patterns and segments in the Amazon Fine Food Reviews dataset to inform recommendations using K-means clustering.",
-    skills: ["K-means", "Feature Selection", "Data Preprocessing", "Data Visualization"],
-    img: "assets/amazon-kmeans.jpg",
-    demo: "#"
-  },
-  {
-    title: "BLEVE Pressure Prediction",
-    description:
-      "Neural-network model to predict target pressure; focused on preprocessing, model selection, and tuning for accuracy and interpretability.",
-    skills: ["Neural Networks", "Model Evaluation", "Hyperparameter Tuning", "Data Preprocessing"],
-    img: "assets/bleve-pressure.png",
-    demo: "#"
-  }
-];
-
-// === Render project cards ===
-const projectGrid = document.getElementById("projectGrid");
-
-projects.forEach(p => {
-  const card = document.createElement("article");
-  card.className = "card shadow";
-
-  const skills = p.skills?.map(s => `<span class="tag">${s}</span>`).join("") || "";
-
-  card.innerHTML = `
-    ${p.img ? `<img class="project-img" src="${p.img}" alt="${p.title}">` : ""}
-    <h3 style="margin:.8rem 0 .3rem">${p.title}</h3>
-    <p class="muted" style="margin:.2rem 0 .6rem">${p.description}</p>
-    <div class="skill-tags" style="margin-bottom:.8rem">${skills}</div>
-    <div class="project-links" style="display:flex;gap:.6rem;flex-wrap:wrap">
-      ${p.code && p.code !== "#" ? `<a class="btn small" href="${p.code}" target="_blank" rel="noopener">View Code</a>` : ""}
-      ${p.demo && p.demo !== "#" ? `<a class="btn-outline small" href="${p.demo}" target="_blank" rel="noopener">Live Demo</a>` : ""}
-    </div>
-  `;
-  projectGrid.appendChild(card);
-});
-
 // Skill categories
 const skillCategories = {
   "Analytical Tools": ["Power BI","R","SQL","Excel"],
@@ -212,3 +152,72 @@ form.addEventListener('submit', async (e) => {
   statusEl.textContent = 'Message sent! I will reply soon.';
   form.reset();
 });
+
+// === Projects (single source of truth) ===
+// Put your images in /assets and update the file names below
+const projects = [
+  {
+    slug: "hrv-cnn",
+    title: "Identification of Age Groups from HRV using CNN",
+    description:
+      "Built a CNN to classify HRV by converting interbeat interval (IBI) data into images. Improved detection of subtle cardiovascular patterns.",
+    skills: ["CNN", "Python", "Data Preprocessing", "Visualization", "Data Augmentation"],
+    img: "assets/hrv-cnn.jpg",
+    code: "#",     // e.g. "https://github.com/youruser/hrv-cnn"
+    demo: "#"      // e.g. live link or "#"
+  },
+  {
+    slug: "rl-reacher",
+    title: "Reinforcement Learning – Reacher Environment",
+    description:
+      "Trained RL agents (DQN, Actor-Critic, REINFORCE) to control a two-joint robotic arm to reach random targets while minimizing control cost.",
+    skills: ["Reinforcement Learning", "Algorithm Implementation", "Hyperparameter Tuning", "Performance Analysis"],
+    img: "assets/rl-reacher.png",
+    code: "#",
+    demo: "#"
+  },
+  {
+    slug: "amazon-kmeans",
+    title: "K-means Cluster Analysis – Amazon Reviews",
+    description:
+      "Uncovered patterns and segments in the Amazon Fine Food Reviews dataset to inform recommendations using K-means clustering.",
+    skills: ["K-means", "Feature Selection", "Data Preprocessing", "Data Visualization"],
+    img: "assets/amazon-kmeans.jpg",
+    code: "#",
+    demo: "#"
+  },
+  {
+    slug: "bleve-pressure",
+    title: "BLEVE Pressure Prediction",
+    description:
+      "Neural-network model to predict target pressure; focused on preprocessing, model selection, and tuning for accuracy and interpretability.",
+    skills: ["Neural Networks", "Model Evaluation", "Hyperparameter Tuning", "Data Preprocessing"],
+    img: "assets/bleve-pressure.png",
+    code: "#",
+    demo: "#"
+  }
+];
+
+// === Render project cards (ONE TIME) ===
+const projectGrid = document.getElementById("projectGrid");
+
+projects.forEach(p => {
+  const card = document.createElement("article");
+  card.className = "project-card card shadow";
+
+  const skills = (p.skills || []).map(s => `<span class="tag">${s}</span>`).join("");
+
+  card.innerHTML = `
+    ${p.img ? `<img class="project-img" src="${p.img}" alt="${p.title}">` : ""}
+    <h3 style="margin:.8rem 0 .3rem">${p.title}</h3>
+    <p class="muted" style="margin:.2rem 0 .6rem">${p.description}</p>
+    <div class="skill-tags" style="margin-bottom:.8rem">${skills}</div>
+    <div class="project-links" style="display:flex;gap:.6rem;flex-wrap:wrap">
+      ${p.code && p.code !== "#" ? `<a class="btn small" href="${p.code}" target="_blank" rel="noopener">View Code</a>` : ""}
+      ${p.demo && p.demo !== "#" ? `<a class="btn-outline small" href="${p.demo}" target="_blank" rel="noopener">Live Demo</a>` : ""}
+      <a class="btn small" href="project.html?slug=${p.slug}">Learn More</a>
+    </div>
+  `;
+  projectGrid.appendChild(card);
+});
+
