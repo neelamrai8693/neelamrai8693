@@ -68,6 +68,27 @@ body::after{
   display:flex; align-items:center; justify-content:space-between;
   padding:.8rem 1rem;
 }
+
+.site-header{
+  display:flex; align-items:center; gap:1rem; padding:1rem;
+  justify-content:space-between; /* keep edges balanced */
+}
+.site-header .logo{ margin-right:auto; }
+.site-header .nav{ gap:1.2rem; }
+
+/* Mobile menu covers width; keep controls tappable */
+@media (max-width:860px){
+  .menu-toggle{ display:block; }
+  #themeToggle{ order:3; } /* after menu on small screens if needed */
+  .nav{
+    position:fixed; inset:60px 0 auto 0; background:rgba(11,12,16,.92);
+    border-bottom:1px solid rgba(255,255,255,.08);
+    display:none; flex-direction:column; padding:1rem; gap:.6rem; z-index:40;
+  }
+  body.light .nav{ background: rgba(255,255,255,.95); }
+  .nav.open{ display:flex; }
+}
+
 .logo{font-weight:800; text-decoration:none; color:inherit; letter-spacing:.2px}
 .nav{display:flex; gap:1rem; align-items:center}
 .nav a{color:inherit; text-decoration:none; padding:.4rem .6rem; border-radius:.6rem}
@@ -372,3 +393,74 @@ body::before {
 @media (prefers-reduced-motion: reduce){
   .hello-fade-in{ animation:none; }
 }
+
+/* ===== Light theme ===== */
+body.light {
+  color: var(--light-text);
+  background:
+    radial-gradient(1200px 600px at 15% -10%, rgba(92,241,246,.10), transparent 60%),
+    radial-gradient(900px 500px at 85% 0%,   rgba(20, 6,212,.10),  transparent 60%),
+    radial-gradient(800px 400px at 50% 120%, rgba(244,114,182,.10), transparent 60%),
+    var(--light-bg);
+}
+
+/* dim the Milky Way overlay on light */
+body.light::before { opacity:.08; }
+
+/* header + nav */
+body.light .site-header{
+  background: rgba(255,255,255,.6);
+  border-bottom: 1px solid rgba(0,0,0,.08);
+}
+body.light .nav a:hover{ background: rgba(0,0,0,.06); }
+body.light .nav a.active{ background: rgba(139,92,246,.18); outline:1px solid rgba(139,92,246,.35); }
+
+/* cards, inputs, borders */
+body.light .card{
+  background: linear-gradient(180deg, rgba(0,0,0,.02), rgba(0,0,0,.01));
+  border: 1px solid rgba(0,0,0,.08);
+}
+body.light input,
+body.light textarea{
+  background: var(--light-panel);
+  color: var(--light-text);
+  border: 1px solid rgba(0,0,0,.12);
+}
+body.light .btn-outline{ border-color: rgba(0,0,0,.18); }
+
+/* footer */
+body.light .site-footer{
+  background: rgba(0,0,0,.02);
+  border-top: 1px solid rgba(0,0,0,.08);
+}
+body.light .footer-nav a{ color: var(--light-muted); }
+body.light .footer-nav a:hover{ color: var(--light-text); }
+
+#themeToggle{
+  border:1px solid rgba(255,255,255,.2);
+  background:transparent; color:inherit;
+  padding:.45rem .7rem; border-radius:.6rem;
+}
+#themeToggle:hover{ background:rgba(255,255,255,.06); }
+body.light #themeToggle{ border-color: rgba(0,0,0,.15); }
+body.light #themeToggle:hover{ background: rgba(0,0,0,.06); }
+
+/* Merge cosmic grid with your gradient stack */
+body{
+  background-image:
+    radial-gradient(1200px 600px at 15% -10%, rgba(92, 241, 246, 0.12), transparent 60%),
+    radial-gradient(900px 500px at 85% 0%,   rgba(20, 6, 212, 0.12),  transparent 60%),
+    radial-gradient(800px 400px at 50% 120%, rgba(244,114,182,.10), transparent 60%),
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size:
+    auto, auto, auto, 40px 40px, 40px 40px;
+  background-color: var(--bg);
+}
+body.light{ background-color: var(--light-bg); }
+
+/* Focus ring alignment with your palette */
+:focus-visible{ outline: none; box-shadow: 0 0 0 4px var(--ring); }
+
+/* Reduce glow on light mode for readability */
+body.light .btn{ box-shadow: 0 6px 16px rgba(0,0,0,.12); }
