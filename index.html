@@ -130,22 +130,37 @@
     <section id="contact" class="section alt">
       <div class="container">
         <h2 class="center">Contact</h2>
-        <form id="contactForm" class="form card shadow" novalidate>
+
+        <form
+          id="contactForm"
+          class="form card shadow"
+          action="https://formspree.io/f/mnnbayov"
+          method="POST"
+          novalidate
+        >
+          <!-- Honeypot (hidden) -->
+          <input type="text" name="_gotcha" class="hp" aria-hidden="true" tabindex="-1" autocomplete="off" />
+          <!-- Custom subject -->
+          <input type="hidden" name="_subject" value="New message from portfolio contact form" />
+
           <div class="form-row">
             <label for="name">Name</label>
             <input id="name" name="name" placeholder="Your name" required />
             <small class="error" data-for="name"></small>
           </div>
+
           <div class="form-row">
             <label for="email">Email</label>
             <input id="email" name="email" type="email" placeholder="you@example.com" required />
             <small class="error" data-for="email"></small>
           </div>
+
           <div class="form-row">
             <label for="message">Message</label>
             <textarea id="message" name="message" rows="5" placeholder="Write a message…" required></textarea>
             <small class="error" data-for="message"></small>
           </div>
+
           <div class="form-actions">
             <button class="btn" type="submit">Send</button>
             <span id="formStatus" role="status" aria-live="polite"></span>
@@ -153,6 +168,7 @@
         </form>
       </div>
     </section>
+
 
     <footer class="site-footer">
       <div class="container footer-grid">

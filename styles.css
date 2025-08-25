@@ -488,3 +488,6 @@ body.light .btn{ box-shadow: 0 6px 16px rgba(0,0,0,.12); }
 @media (min-width: 960px){
   #mobileMenu { display:none !important; }
 }
+
+/* hide honeypot field without display:none for some spam bots */
+.hp{ position:absolute; left:-10000px; top:auto; width:1px; height:1px; overflow:hidden; }

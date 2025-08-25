@@ -24,7 +24,7 @@ const menuToggleBtn = document.getElementById('navToggle');
 const mobileMenu = document.getElementById('mobileMenu');
 const menuLinks = mobileMenu ? mobileMenu.querySelectorAll('.nav-link') : [];
 
-// ✅ Safety: ensure the overlay starts closed
+// Safety: ensure the overlay starts closed
 if (mobileMenu) {
   mobileMenu.hidden = true;
   mobileMenu.classList.remove('open');
@@ -197,30 +197,54 @@ if (tagWrap) {
   tick();
 })();
 
-// Contact form validation (demo)
+// === Contact form: send via Formspree ===
 const form = document.getElementById('contactForm');
 const statusEl = document.getElementById('formStatus');
+
 function setError(name, msg) {
   const el = document.querySelector(`.error[data-for="${name}"]`);
   if (el) el.textContent = msg || '';
 }
+
 if (form) {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+
+    // Clear previous errors / status
     if (statusEl) statusEl.textContent = '';
     setError('name'); setError('email'); setError('message');
+
+    // Basic validation (client-side)
     const data = Object.fromEntries(new FormData(form).entries());
     let hasError = false;
-    if (!data.name || data.name.trim().length < 2) { setError('name', 'Please enter your name.'); hasError = true; }
-    if (!data.email || !/^\S+@\S+\.\S+$/.test(data.email)) { setError('email', 'Enter a valid email address.'); hasError = true; }
-    if (!data.message || data.message.trim().length < 10) { setError('message', 'Message should be at least 10 characters.'); hasError = true; }
+    if (!data.name || data.name.trim().length < 2) { setError('name','Please enter your name.'); hasError = true; }
+    if (!data.email || !/^\S+@\S+\.\S+$/.test(data.email)) { setError('email','Enter a valid email address.'); hasError = true; }
+    if (!data.message || data.message.trim().length < 10) { setError('message','Message should be at least 10 characters.'); hasError = true; }
     if (hasError) return;
-    if (statusEl) statusEl.textContent = 'Sending...';
-    await new Promise(r => setTimeout(r, 800));
-    if (statusEl) statusEl.textContent = 'Message sent! I will reply soon.';
-    form.reset();
+
+    try {
+      if (statusEl) statusEl.textContent = 'Sending…';
+      // Send to Formspree; if JS is disabled the form will still POST normally
+      const res = await fetch(form.action, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: new FormData(form)
+      });
+
+      if (res.ok) {
+        if (statusEl) statusEl.textContent = 'Message sent! I will reply soon.';
+        form.reset();
+      } else {
+        const err = await res.json().catch(() => ({}));
+        const msg = err?.errors?.[0]?.message || 'Sorry, something went wrong.';
+        if (statusEl) statusEl.textContent = msg;
+      }
+    } catch {
+      if (statusEl) statusEl.textContent = 'Network error. Please try again.';
+    }
   });
 }
+
 
 // === Projects (single source of truth) ===
 const projects = [
