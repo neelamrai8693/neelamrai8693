@@ -3,33 +3,82 @@ const themeBtn = document.getElementById('themeToggle');
 const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
 const saved = localStorage.getItem('theme');
 if ((saved === 'light') || (!saved && prefersLight)) document.body.classList.add('light');
-themeBtn.addEventListener('click', () => {
-  document.body.classList.toggle('light');
-  localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
-});
-
-// Mobile menu toggle
-const toggle = document.querySelector('.menu-toggle');
-const nav = document.getElementById('nav');
-toggle.addEventListener('click', () => {
-  const open = nav.classList.toggle('open');
-  toggle.setAttribute('aria-expanded', String(open));
-});
-
-// Active link highlighting
-const links = [...document.querySelectorAll('.nav a')].filter(a => a.hash);
-const sections = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
-const obs = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === `#${e.target.id}`));
-    }
+if (themeBtn) {
+  themeBtn.addEventListener('click', () => {
+    document.body.classList.toggle('light');
+    localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
   });
-}, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
-sections.forEach(s => obs.observe(s));
+}
+
+/* ===== Mobile overlay menu (single source of truth) ===== */
+const menuToggleBtn = document.getElementById('navToggle');
+const mobileMenu = document.getElementById('mobileMenu');
+const menuLinks = mobileMenu ? mobileMenu.querySelectorAll('.nav-link') : [];
+
+function openMenu() {
+  if (!mobileMenu) return;
+  mobileMenu.hidden = false;
+  mobileMenu.classList.add('open');
+  if (menuToggleBtn) menuToggleBtn.setAttribute('aria-expanded', 'true');
+  document.body.style.overflow = 'hidden'; // prevent background scroll
+}
+
+function closeMenu() {
+  if (!mobileMenu) return;
+  mobileMenu.classList.remove('open');
+  if (menuToggleBtn) menuToggleBtn.setAttribute('aria-expanded', 'false');
+  document.body.style.overflow = '';
+  // allow transition to finish before hiding (so it doesn't "stick")
+  setTimeout(() => { if (!mobileMenu.classList.contains('open')) mobileMenu.hidden = true; }, 180);
+}
+
+if (menuToggleBtn && mobileMenu) {
+  menuToggleBtn.addEventListener('click', () => {
+    mobileMenu.classList.contains('open') ? closeMenu() : openMenu();
+  });
+
+  // 1) close when a nav link is tapped
+  menuLinks.forEach(a => a.addEventListener('click', closeMenu));
+
+  // 2) close on outside click
+  document.addEventListener('click', (e) => {
+    if (!mobileMenu.classList.contains('open')) return;
+    const clickedInside = mobileMenu.contains(e.target) || menuToggleBtn.contains(e.target);
+    if (!clickedInside) closeMenu();
+  });
+
+  // 3) close on ESC
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && mobileMenu.classList.contains('open')) closeMenu();
+  });
+
+  // 4) close on scroll (mobile UX nicety)
+  let lastY = window.scrollY;
+  window.addEventListener('scroll', () => {
+    if (!mobileMenu.classList.contains('open')) return;
+    const dy = Math.abs(window.scrollY - lastY);
+    lastY = window.scrollY;
+    if (dy > 10) closeMenu();
+  }, { passive: true });
+}
+
+/* ===== Active link highlighting (desktop + mobile) ===== */
+const navLinks = [...document.querySelectorAll('a[href^="#"]')].filter(a => a.hash);
+const sections = navLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+if (sections.length) {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === `#${e.target.id}`));
+      }
+    });
+  }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+  sections.forEach(s => obs.observe(s));
+}
 
 // Footer year
-document.getElementById('year').textContent = new Date().getFullYear();
+const yearEl = document.getElementById('year');
+if (yearEl) yearEl.textContent = new Date().getFullYear();
 
 // Multilingual "Hello" rotator
 const helloRotator = document.getElementById('helloRotator');
@@ -51,7 +100,7 @@ if (helloRotator) {
     i++;
   }
   showHello();
-  const interval = setInterval(showHello, prefersReduced ? 4000 : 2200);
+  setInterval(showHello, prefersReduced ? 4000 : 2200);
 }
 
 // Skill categories
@@ -67,24 +116,26 @@ const skillCategories = {
 
 // Render skills by category
 const tagWrap = document.getElementById('skillTags');
-for (const [category, skills] of Object.entries(skillCategories)) {
-  const group = document.createElement('div');
-  group.className = "skill-group card shadow";
-  const title = document.createElement('h3');
-  title.textContent = category;
-  group.appendChild(title);
+if (tagWrap) {
+  for (const [category, skills] of Object.entries(skillCategories)) {
+    const group = document.createElement('div');
+    group.className = "skill-group card shadow";
+    const title = document.createElement('h3');
+    title.textContent = category;
+    group.appendChild(title);
 
-  const tags = document.createElement('div');
-  tags.className = "skill-tags";
-  skills.forEach(s => {
-    const span = document.createElement('span');
-    span.className = 'tag';
-    span.textContent = s;
-    tags.appendChild(span);
-  });
+    const tags = document.createElement('div');
+    tags.className = "skill-tags";
+    skills.forEach(s => {
+      const span = document.createElement('span');
+      span.className = 'tag';
+      span.textContent = s;
+      tags.appendChild(span);
+    });
 
-  group.appendChild(tags);
-  tagWrap.appendChild(group);
+    group.appendChild(tags);
+    tagWrap.appendChild(group);
+  }
 }
 
 // Starfield
@@ -137,24 +188,25 @@ function setError(name, msg) {
   const el = document.querySelector(`.error[data-for="${name}"]`);
   if (el) el.textContent = msg || '';
 }
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  statusEl.textContent = '';
-  setError('name'); setError('email'); setError('message');
-  const data = Object.fromEntries(new FormData(form).entries());
-  let hasError = false;
-  if (!data.name || data.name.trim().length < 2) { setError('name', 'Please enter your name.'); hasError = true; }
-  if (!data.email || !/^\S+@\S+\.\S+$/.test(data.email)) { setError('email', 'Enter a valid email address.'); hasError = true; }
-  if (!data.message || data.message.trim().length < 10) { setError('message', 'Message should be at least 10 characters.'); hasError = true; }
-  if (hasError) return;
-  statusEl.textContent = 'Sending...';
-  await new Promise(r => setTimeout(r, 800));
-  statusEl.textContent = 'Message sent! I will reply soon.';
-  form.reset();
-});
+if (form) {
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (statusEl) statusEl.textContent = '';
+    setError('name'); setError('email'); setError('message');
+    const data = Object.fromEntries(new FormData(form).entries());
+    let hasError = false;
+    if (!data.name || data.name.trim().length < 2) { setError('name', 'Please enter your name.'); hasError = true; }
+    if (!data.email || !/^\S+@\S+\.\S+$/.test(data.email)) { setError('email', 'Enter a valid email address.'); hasError = true; }
+    if (!data.message || data.message.trim().length < 10) { setError('message', 'Message should be at least 10 characters.'); hasError = true; }
+    if (hasError) return;
+    if (statusEl) statusEl.textContent = 'Sending...';
+    await new Promise(r => setTimeout(r, 800));
+    if (statusEl) statusEl.textContent = 'Message sent! I will reply soon.';
+    form.reset();
+  });
+}
 
 // === Projects (single source of truth) ===
-// Put your images in /assets and update the file names below
 const projects = [
   {
     slug: "hrv-cnn",
@@ -163,8 +215,8 @@ const projects = [
       "Built a CNN to classify HRV by converting interbeat interval (IBI) data into images. Improved detection of subtle cardiovascular patterns.",
     skills: ["CNN", "Python", "Data Preprocessing", "Visualization", "Data Augmentation"],
     img: "assets/hrv-cnn.jpg",
-    code: "#",     // e.g. "https://github.com/youruser/hrv-cnn"
-    demo: "#"      // e.g. live link or "#"
+    code: "#",
+    demo: "#"
   },
   {
     slug: "rl-reacher",
@@ -200,24 +252,24 @@ const projects = [
 
 // === Render project cards (ONE TIME) ===
 const projectGrid = document.getElementById("projectGrid");
+if (projectGrid) {
+  projects.forEach(p => {
+    const card = document.createElement("article");
+    card.className = "project-card card shadow";
 
-projects.forEach(p => {
-  const card = document.createElement("article");
-  card.className = "project-card card shadow";
+    const skills = (p.skills || []).map(s => `<span class="tag">${s}</span>`).join("");
 
-  const skills = (p.skills || []).map(s => `<span class="tag">${s}</span>`).join("");
-
-  card.innerHTML = `
-    ${p.img ? `<img class="project-img" src="${p.img}" alt="${p.title}">` : ""}
-    <h3 style="margin:.8rem 0 .3rem">${p.title}</h3>
-    <p class="muted" style="margin:.2rem 0 .6rem">${p.description}</p>
-    <div class="skill-tags" style="margin-bottom:.8rem">${skills}</div>
-    <div class="project-links" style="display:flex;gap:.6rem;flex-wrap:wrap">
-      ${p.code && p.code !== "#" ? `<a class="btn small" href="${p.code}" target="_blank" rel="noopener">View Code</a>` : ""}
-      ${p.demo && p.demo !== "#" ? `<a class="btn-outline small" href="${p.demo}" target="_blank" rel="noopener">Live Demo</a>` : ""}
-      <a class="btn small" href="project.html?slug=${p.slug}">Learn More</a>
-    </div>
-  `;
-  projectGrid.appendChild(card);
-});
-
+    card.innerHTML = `
+      ${p.img ? `<img class="project-img" src="${p.img}" alt="${p.title}">` : ""}
+      <h3 style="margin:.8rem 0 .3rem">${p.title}</h3>
+      <p class="muted" style="margin:.2rem 0 .6rem">${p.description}</p>
+      <div class="skill-tags" style="margin-bottom:.8rem">${skills}</div>
+      <div class="project-links" style="display:flex;gap:.6rem;flex-wrap:wrap">
+        ${p.code && p.code !== "#" ? `<a class="btn small" href="${p.code}" target="_blank" rel="noopener">View Code</a>` : ""}
+        ${p.demo && p.demo !== "#" ? `<a class="btn-outline small" href="${p.demo}" target="_blank" rel="noopener">Live Demo</a>` : ""}
+        <a class="btn small" href="project.html?slug=${p.slug}">Learn More</a>
+      </div>
+    `;
+    projectGrid.appendChild(card);
+  });
+}

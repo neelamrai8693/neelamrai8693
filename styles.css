@@ -464,3 +464,34 @@ body.light{ background-color: var(--light-bg); }
 
 /* Reduce glow on light mode for readability */
 body.light .btn{ box-shadow: 0 6px 16px rgba(0,0,0,.12); }
+
+/* base */
+#mobileMenu {
+  position: fixed;      /* sits above page */
+  inset: 0;             /* full screen */
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 5rem 2rem 2rem;
+  background: rgba(10,12,22,.92);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  height: 100dvh;       /* better than 100vh on mobile */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+
+  opacity: 0;
+  pointer-events: none; /* cannot block page when closed */
+  transform: translateY(-8px);
+  transition: opacity .18s ease, transform .18s ease;
+}
+
+/* visible state */
+#mobileMenu.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
+}
+
+/* hide with [hidden] attribute by default */
+#mobileMenu[hidden] { display: block; } /* allow transitions */
