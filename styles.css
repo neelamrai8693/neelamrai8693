@@ -469,16 +469,16 @@ body.light .btn{ box-shadow: 0 6px 16px rgba(0,0,0,.12); }
 #mobileMenu{
   position: fixed; inset: 0; z-index: 9999;
   height: 100dvh; overflow-y: auto;
-  background: rgba(10,12,22,.92);
+  background: rgba(30, 36, 66, 0.92);
   backdrop-filter: blur(8px);
-  display: block; /* keep transitions possible */
+  display: none; /* hide by default */
   opacity: 0; pointer-events: none; transform: translateY(-8px);
   transition: opacity .18s ease, transform .18s ease;
   padding: 88px 28px 28px;
 }
-#mobileMenu.open{ opacity:1; pointer-events:auto; transform:none; }
-#mobileMenu[hidden]{ display:block; } /* keep transitions even when hidden */
-#mobileMenu a{ display:block; font-size:28px; font-weight:600; padding:12px 10px; border-radius:14px; }
+#mobileMenu.open{ display: block; opacity:1; pointer-events:auto; transform:none; } /*show only when open*/
+#mobileMenu[hidden]{ display:none; } /* keep it hidden */
+#mobileMenu a{ display:block; font-size:22px; font-weight:600; padding:12px 6px; margin:4px 0; }
 
 /* Hide desktop nav on small screens, show hamburger */
 @media (max-width: 959px){

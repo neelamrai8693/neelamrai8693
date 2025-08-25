@@ -24,6 +24,12 @@ const menuToggleBtn = document.getElementById('navToggle');
 const mobileMenu = document.getElementById('mobileMenu');
 const menuLinks = mobileMenu ? mobileMenu.querySelectorAll('.nav-link') : [];
 
+// ✅ Safety: ensure the overlay starts closed
+if (mobileMenu) {
+  mobileMenu.hidden = true;
+  mobileMenu.classList.remove('open');
+}
+
 function openMenu() {
   if (!mobileMenu) return;
   mobileMenu.hidden = false;
