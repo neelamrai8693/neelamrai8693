@@ -1,14 +1,23 @@
-// Theme toggle with localStorage
-const themeBtn = document.getElementById('themeToggle');
+// ===== Theme toggle with localStorage =====
 const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
 const saved = localStorage.getItem('theme');
-if ((saved === 'light') || (!saved && prefersLight)) document.body.classList.add('light');
-if (themeBtn) {
-  themeBtn.addEventListener('click', () => {
+if ((saved === 'light') || (!saved && prefersLight)) {
+  document.body.classList.add('light');
+}
+
+function setupThemeToggle(btnId){
+  const btn = document.getElementById(btnId);
+  if (!btn) return;
+  btn.addEventListener('click', () => {
     document.body.classList.toggle('light');
     localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
   });
 }
+
+// Initialize both theme buttons
+setupThemeToggle('themeToggleDesktop');
+setupThemeToggle('themeToggleMobile');
+
 
 /* ===== Mobile overlay menu (single source of truth) ===== */
 const menuToggleBtn = document.getElementById('navToggle');
@@ -61,6 +70,7 @@ if (menuToggleBtn && mobileMenu) {
     if (dy > 10) closeMenu();
   }, { passive: true });
 }
+
 
 /* ===== Active link highlighting (desktop + mobile) ===== */
 const navLinks = [...document.querySelectorAll('a[href^="#"]')].filter(a => a.hash);
